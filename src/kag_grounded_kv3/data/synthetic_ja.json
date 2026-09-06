@@ -1,0 +1,95 @@
+{
+  "source_values": [
+    {
+      "id": "SRC_001",
+      "name": "画像保存",
+      "chapter": "upload",
+      "content": "クリエイターが画像を投稿すると、原本をオブジェクトストレージに保存し、画像メタデータをデータベースへ記録します。"
+    },
+    {
+      "id": "SRC_002",
+      "name": "更新と無効化",
+      "chapter": "cache",
+      "content": "画像メタデータの更新時はバージョン番号を増やし、対応するサムネイルキャッシュを無効化します。"
+    },
+    {
+      "id": "SRC_003",
+      "name": "サムネイル生成",
+      "chapter": "delivery",
+      "content": "閲覧APIはキャッシュミス時に新しいバージョンのサムネイルを生成し、配信キャッシュへ保存します。"
+    },
+    {
+      "id": "SRC_004",
+      "name": "検索同期",
+      "chapter": "search",
+      "content": "検索インデックスはデータベースの変更イベントを非同期に受け取り、イベントのバージョンを確認して冪等に更新します。"
+    },
+    {
+      "id": "SRC_005",
+      "name": "重複生成防止",
+      "chapter": "delivery",
+      "content": "同じ画像に更新要求が集中するときは、画像ID単位で処理をまとめ、同一サムネイルの重複生成を防ぎます。"
+    },
+    {
+      "id": "SRC_006",
+      "name": "失敗処理",
+      "chapter": "operations",
+      "content": "画像変換に失敗した場合は上限付きバックオフで再試行し、上限到達後は監視システムへ通知します。"
+    }
+  ],
+  "paths": [
+    {
+      "id": "PATH_META_CACHE",
+      "anchor_entity": "画像メタデータ",
+      "target_entity": "サムネイルキャッシュ",
+      "source_value_ids": ["SRC_002", "SRC_003"],
+      "hops": [
+        {
+          "predicate": "更新時に無効化する",
+          "source_quote": "画像メタデータの更新時はバージョン番号を増やし、対応するサムネイルキャッシュを無効化します。"
+        },
+        {
+          "predicate": "キャッシュミス時に生成する",
+          "source_quote": "閲覧APIはキャッシュミス時に新しいバージョンのサムネイルを生成し、配信キャッシュへ保存します。"
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {"id": "SRC_001", "view": "source", "content": "画像投稿 原本保存 画像メタデータ DB", "source_value_ids": ["SRC_001"]},
+    {"id": "SRC_002", "view": "source", "content": "画像メタデータ 更新 バージョン サムネイルキャッシュ 無効化", "source_value_ids": ["SRC_002"]},
+    {"id": "SRC_003", "view": "source", "content": "閲覧API キャッシュミス 新しいサムネイル 生成 配信", "source_value_ids": ["SRC_003"]},
+    {"id": "SRC_004", "view": "source", "content": "検索インデックス DB変更イベント 非同期 バージョン 冪等更新", "source_value_ids": ["SRC_004"]},
+    {"id": "SRC_005", "view": "source", "content": "更新要求 集中 画像ID 重複サムネイル生成 防止", "source_value_ids": ["SRC_005"]},
+    {"id": "SRC_006", "view": "source", "content": "画像変換 失敗 バックオフ 再試行 監視通知", "source_value_ids": ["SRC_006"]},
+
+    {"id": "SENT_002", "view": "sentence", "content": "画像メタデータ更新時にサムネイルキャッシュを無効化する", "source_value_ids": ["SRC_002"], "source_quotes": ["画像メタデータの更新時はバージョン番号を増やし、対応するサムネイルキャッシュを無効化します。"]},
+    {"id": "SENT_003", "view": "sentence", "content": "キャッシュミス時に新しいサムネイルを生成する", "source_value_ids": ["SRC_003"], "source_quotes": ["閲覧APIはキャッシュミス時に新しいバージョンのサムネイルを生成し、配信キャッシュへ保存します。"]},
+    {"id": "SENT_004", "view": "sentence", "content": "変更イベントのバージョンを確認して検索インデックスを更新する", "source_value_ids": ["SRC_004"], "source_quotes": ["検索インデックスはデータベースの変更イベントを非同期に受け取り、イベントのバージョンを確認して冪等に更新します。"]},
+    {"id": "SENT_005", "view": "sentence", "content": "画像ID単位で要求をまとめ重複生成を防ぐ", "source_value_ids": ["SRC_005"], "source_quotes": ["同じ画像に更新要求が集中するときは、画像ID単位で処理をまとめ、同一サムネイルの重複生成を防ぎます。"]},
+
+    {"id": "FACT_002", "view": "fact", "content": "画像メタデータ HAS_INVALIDATION サムネイルキャッシュ", "source_value_ids": ["SRC_002"], "source_quotes": ["画像メタデータの更新時はバージョン番号を増やし、対応するサムネイルキャッシュを無効化します。"]},
+    {"id": "FACT_004", "view": "fact", "content": "変更イベント HAS_VERSION 検索インデックス更新", "source_value_ids": ["SRC_004"], "source_quotes": ["検索インデックスはデータベースの変更イベントを非同期に受け取り、イベントのバージョンを確認して冪等に更新します。"]},
+    {"id": "FACT_005", "view": "fact", "content": "画像ID PREVENTS 重複生成", "source_value_ids": ["SRC_005"], "source_quotes": ["同じ画像に更新要求が集中するときは、画像ID単位で処理をまとめ、同一サムネイルの重複生成を防ぎます。"]},
+
+    {"id": "KVP_PATH_META_CACHE", "view": "path", "path_id": "PATH_META_CACHE", "content": "画像メタデータ 更新時に無効化する サムネイルキャッシュ キャッシュミス時に生成する", "source_value_ids": ["SRC_002", "SRC_003"], "source_quotes": ["画像メタデータの更新時はバージョン番号を増やし、対応するサムネイルキャッシュを無効化します。", "閲覧APIはキャッシュミス時に新しいバージョンのサムネイルを生成し、配信キャッシュへ保存します。"]}
+  ],
+  "questions": [
+    {
+      "id": "Q01",
+      "question": "画像メタデータを更新した後も古いサムネイルキャッシュが表示される場合、どのような処理が必要ですか。",
+      "expected_source_ids": ["SRC_002", "SRC_003"]
+    },
+    {
+      "id": "Q02",
+      "question": "データベースの変更イベントが重複または遅れて届く場合、検索インデックスをどう更新しますか。",
+      "expected_source_ids": ["SRC_004"]
+    },
+    {
+      "id": "Q03",
+      "question": "同じ画像の更新要求が集中したとき、サムネイルの重複生成をどう防ぎますか。",
+      "expected_source_ids": ["SRC_005"]
+    }
+  ]
+}
+

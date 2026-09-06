@@ -1,0 +1,21 @@
+stage_order,stage,system,graph,retriever,finalizer,correct,total,accuracy,evidence_recall,mean_latency_seconds,accuracy_vs_lightrag,evidence_vs_lightrag,selection_status,lesson
+0,baseline,LightRAG official hybrid,LightRAG,official hybrid,off,196,229,0.855895,0.840000,5.871000,equal,equal,baseline,Strong evidence exposure with low latency
+1,starting point,KAG official iterative,old KAG,official iterative,off,194,229,0.847162,0.751000,4.895000,below,below,baseline,KAG needed better retrieval or answer selection
+2,retrieval,KAG static hybrid choice optimized,old KAG,static hybrid choice,off,194,229,0.847162,0.882000,33.690000,below,above,diagnostic,Evidence coverage exceeded LightRAG but did not improve final accuracy
+3,retrieval,KAG iterative hybrid,old KAG,multi-route hybrid,off,196,229,0.855895,0.788000,22.157000,equal,below,milestone,Multi-route retrieval tied accuracy at a large latency cost
+4,finalizer,KAG iterative hybrid guarded,old KAG,multi-route hybrid,guarded,197,229,0.860262,0.788000,25.542000,above,below,milestone,Guarded review improved one answer without changing evidence
+5,finalizer,KAG official iterative legacy,old KAG,official iterative,legacy,198,229,0.864629,0.751000,8.921000,above,below,milestone,Evidence-only rewriting corrected four answers but produced one empty output
+6,finalizer,KAG official iterative guarded,old KAG,official iterative,guarded,199,229,0.868996,0.751000,14.724000,above,below,milestone,Risk filtering kept five gains with no correct-to-wrong changes
+7,graph v1,Multi-granular legacy,Multi-granular v1,generic chunk retrieval,legacy,197,229,0.860262,0.592000,8.478000,above,below,ablation,Derived views competed with complete source passages
+8,graph v1,Multi-granular guarded,Multi-granular v1,generic chunk retrieval,guarded,198,229,0.864629,0.592000,14.054000,above,below,ablation,Accuracy improved while source evidence remained weak
+9,graph v1,Composite legacy,Composite v1,generic chunk retrieval,legacy,197,229,0.860262,0.587000,8.475000,above,below,ablation,Mixing facts summaries and paths reduced source coverage
+10,graph v1,Composite guarded,Composite v1,generic chunk retrieval,guarded,199,229,0.868996,0.587000,14.150000,above,below,ablation,High accuracy did not imply grounded evidence coverage
+11,coverage v2,Multi-granular Coverage v2 legacy,Multi-granular Coverage v2,view-aware RRF,legacy,198,229,0.864629,0.501000,9.785000,above,below,ablation,More extracted facts did not solve Top-8 source competition
+12,coverage v2,Multi-granular Coverage v2 guarded,Multi-granular Coverage v2,view-aware RRF,guarded,198,229,0.864629,0.501000,14.322000,above,below,ablation,Fixed quotas still displaced useful source context
+13,KV3 candidate,KV3 Source Projection off,KAGGroundedKV3,kv_source_projection,off,198,229,0.864629,0.726648,,above,below,rejected_finalizers,Key-to-value projection recovered evidence but missed the legacy gate
+14,KV3 candidate,KV3 Source Projection legacy,KAGGroundedKV3,kv_source_projection,legacy,198,229,0.864629,0.726648,,above,below,rejected_finalizers,Legacy result stayed below the preregistered 199 threshold
+15,KV3 candidate,KV3 Source Projection guarded,KAGGroundedKV3,kv_source_projection,guarded,200,229,0.873362,0.726648,,above,below,rejected_finalizers,One strong mode did not override the candidate-level gate
+16,final,KV3 Conditional Path off,KAGGroundedKV3,kv_conditional_path,off,201,229,0.877729,0.726871,5.212411,above,below,selected,Strictly gated paths improved the no-finalizer system by three answers
+17,final,KV3 Conditional Path legacy,KAGGroundedKV3,kv_conditional_path,legacy,203,229,0.886463,0.726871,10.113903,above,below,selected,Best accuracy with broad evidence-only rewriting
+18,final,KV3 Conditional Path guarded,KAGGroundedKV3,kv_conditional_path,guarded,203,229,0.886463,0.726871,15.035834,above,below,selected,Only two overrides preserved the original answer structure
+

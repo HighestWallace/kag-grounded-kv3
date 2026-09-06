@@ -1,0 +1,76 @@
+{
+  "benchmark": {
+    "question_count": 229,
+    "development_count": 160,
+    "validation_count": 69,
+    "model": "qwen3:14b",
+    "embedding": "bge-m3:latest"
+  },
+  "baseline": {
+    "system": "LightRAG official hybrid",
+    "correct": 196,
+    "accuracy": 0.855895,
+    "evidence_recall": 0.84,
+    "mean_latency_seconds": 5.871
+  },
+  "candidates": [
+    {
+      "id": "kv_source_projection",
+      "status": "rejected_finalizers",
+      "development": {
+        "correct": 143,
+        "total": 160,
+        "accuracy": 0.89375,
+        "evidence_recall": 0.72258
+      },
+      "full": {
+        "correct": 198,
+        "total": 229,
+        "accuracy": 0.864629,
+        "evidence_recall": 0.726648,
+        "candidate_pool_evidence_recall": 0.905096
+      },
+      "finalizers": {
+        "off_correct": 198,
+        "legacy_correct": 198,
+        "guarded_correct": 200,
+        "evidence_mismatch_count": 0
+      },
+      "rejection_reason": "The preregistered legacy gate required at least 199 correct answers."
+    },
+    {
+      "id": "kv_conditional_path",
+      "status": "selected",
+      "development": {
+        "correct": 146,
+        "total": 160,
+        "accuracy": 0.9125,
+        "evidence_recall": 0.724853
+      },
+      "full": {
+        "correct": 201,
+        "total": 229,
+        "accuracy": 0.877729,
+        "evidence_recall": 0.726871,
+        "candidate_pool_evidence_recall": 0.905096,
+        "mean_latency_seconds": 5.212411,
+        "p95_latency_seconds": 6.121382
+      },
+      "finalizers": {
+        "off_correct": 201,
+        "legacy_correct": 203,
+        "guarded_correct": 203,
+        "evidence_mismatch_count": 0
+      },
+      "selection_reason": "All preregistered full and finalizer gates passed, so later backup candidates were not run."
+    }
+  ],
+  "integrity": {
+    "gold_used_for_retrieval_or_generation": false,
+    "evaluation_terms_used_for_retrieval_or_generation": false,
+    "lightrag_used_as_input": false,
+    "candidate_registry_sha256": "7263907f5a311b1440ec1c4c6f93f3179949b29ea288db9d874bf0c6994834ab"
+  },
+  "disclosure": "These are aggregate historical results. The private benchmark and source text are not distributed."
+}
+

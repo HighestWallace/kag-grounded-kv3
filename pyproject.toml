@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kag-grounded-kv3"
+version = "0.1.0"
+description = "A sanitized, auditable implementation of grounded key-value retrieval with conditional paths."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+keywords = ["rag", "kag", "retrieval", "knowledge-graph", "grounding"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.8"]
+neo4j = ["neo4j>=5.20"]
+
+[project.scripts]
+grounded-kv3-demo = "kag_grounded_kv3.demo:main"
+
+[tool.setuptools.package-data]
+kag_grounded_kv3 = ["data/*.json"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
